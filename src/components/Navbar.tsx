@@ -47,10 +47,10 @@ const Navbar = () => {
 
           {/* CTA Button */}
           <div className="hidden lg:flex items-center gap-4">
-            <a href="mailto:Deluxedetailing012@gmail.com">
+            <a href="tel:+1234567890">
               <Button variant="gold" size="lg">
                 <Phone className="w-4 h-4" />
-                Book Now
+                Call Now
               </Button>
             </a>
           </div>
@@ -79,10 +79,10 @@ const Navbar = () => {
                 </a>
               ))}
               <div className="px-4 pt-4">
-                <a href="mailto:Deluxedetailing012@gmail.com">
+                <a href="tel:+1234567890">
                   <Button variant="gold" className="w-full">
                     <Phone className="w-4 h-4" />
-                    Book Now
+                    Call Now
                   </Button>
                 </a>
               </div>

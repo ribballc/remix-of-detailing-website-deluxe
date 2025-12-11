@@ -4,10 +4,10 @@ import gallery3 from '@/assets/gallery-3.jpg';
 import gallery4 from '@/assets/gallery-4.jpg';
 
 const galleryItems = [
-  { image: gallery1, title: 'Interior Detail', category: 'Interior' },
-  { image: gallery2, title: 'SUV Exterior', category: 'Exterior' },
-  { image: gallery3, title: 'Ceramic Coating', category: 'Protection' },
-  { image: gallery4, title: 'Wheel & Tire', category: 'Exterior' },
+  { image: gallery1, title: 'Luxury Interior', category: 'Interior' },
+  { image: gallery2, title: 'Exterior Detail', category: 'Exterior' },
+  { image: gallery3, title: 'Exotic Finish', category: 'Protection' },
+  { image: gallery4, title: 'Premium Detail', category: 'Exterior' },
 ];
 
 const Gallery = () => {
