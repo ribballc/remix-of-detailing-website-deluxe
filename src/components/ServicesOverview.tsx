@@ -1,18 +1,30 @@
-import { Car, Truck, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import gallery1 from '@/assets/gallery-1.jpg';
+import gallery2 from '@/assets/gallery-2.jpg';
+import gallery3 from '@/assets/gallery-3.jpg';
+import gallery4 from '@/assets/gallery-4.jpg';
 
 const services = [
   {
-    icon: Car,
-    title: 'Sedans & Coupes',
-    description: 'Full interior & exterior detailing packages for cars',
-    href: '#sedan-packages',
+    image: gallery1,
+    title: 'Mobile Detailing',
+    description: 'We come to you for convenient on-site service',
   },
   {
-    icon: Truck,
-    title: 'Trucks & SUVs',
-    description: 'Comprehensive detailing for larger vehicles',
-    href: '#truck-packages',
+    image: gallery2,
+    title: 'Ceramic Coating',
+    description: 'Long-lasting protection for your paint',
+  },
+  {
+    image: gallery3,
+    title: 'Headlight Restoration',
+    description: 'Restore clarity and improve visibility',
+  },
+  {
+    image: gallery4,
+    title: 'Buffing Services',
+    description: 'Remove scratches and restore shine',
   },
 ];
 
@@ -32,30 +44,30 @@ const ServicesOverview = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, index) => (
             <div
               key={index}
-              className="group relative overflow-hidden rounded-xl bg-card border-2 border-border p-8 hover:border-primary transition-all duration-300 flex flex-col h-full"
+              className="group relative overflow-hidden rounded-xl aspect-[3/4] cursor-pointer"
             >
-              <div className="absolute top-0 left-0 w-full h-1 gold-gradient transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-              
-              <div className="flex-1">
-                <div className="w-16 h-16 rounded-xl gold-gradient flex items-center justify-center mb-6">
-                  <service.icon className="w-8 h-8 text-primary-foreground" />
-                </div>
-                <h3 className="text-2xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors">
+              <img
+                src={service.image}
+                alt={service.title}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">
                   {service.title}
                 </h3>
-                <p className="text-muted-foreground mb-6">{service.description}</p>
+                <p className="text-white/80 text-sm mb-4">{service.description}</p>
+                <a href="#packages">
+                  <Button variant="gold" size="sm" className="group/btn">
+                    View Packages
+                    <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                  </Button>
+                </a>
               </div>
-              
-              <a href={service.href} className="block">
-                <Button variant="gold" className="w-full group/btn">
-                  View Packages
-                  <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-                </Button>
-              </a>
             </div>
           ))}
         </div>
