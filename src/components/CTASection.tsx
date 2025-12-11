@@ -22,14 +22,14 @@ const CTASection = () => {
             contact us now to schedule your appointment.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="#contact">
+            <a href="tel:+1234567890">
               <Button variant="hero" size="xl">
-                Book Now
+                Call Now
               </Button>
             </a>
-            <a href="mailto:Deluxedetailing012@gmail.com">
+            <a href="#contact">
               <Button variant="goldOutline" size="xl">
-                Email Us
+                Get In Touch
               </Button>
             </a>
           </div>
