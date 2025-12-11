@@ -22,7 +22,7 @@ const CTASection = () => {
             contact us now to schedule your appointment.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="tel:+1234567890">
+            <a href="tel:+12148822029">
               <Button variant="hero" size="xl">
                 Call Now
               </Button>

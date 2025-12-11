@@ -33,7 +33,7 @@ const Hero = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-            <a href="tel:+1234567890">
+            <a href="tel:+12148822029">
               <Button variant="hero" size="xl">
                 Call Now
               </Button>

@@ -1,4 +1,4 @@
-import { Mail, Clock, Instagram, Facebook } from 'lucide-react';
+import { Mail, Clock, Instagram, Facebook, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -47,6 +47,19 @@ const ContactForm = () => {
               <h3 className="text-2xl font-bold mb-6 text-foreground">Contact Information</h3>
               
               <div className="space-y-6">
+                <a 
+                  href="tel:+12148822029"
+                  className="flex items-center gap-4 text-muted-foreground hover:text-primary transition-colors"
+                >
+                  <div className="w-12 h-12 rounded-lg gold-gradient flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-5 h-5 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-foreground">Call Us</p>
+                    <p className="text-sm">+1 (214) 882-2029</p>
+                  </div>
+                </a>
+                
                 <a 
                   href="mailto:Deluxedetailing012@gmail.com"
                   className="flex items-center gap-4 text-muted-foreground hover:text-primary transition-colors"
