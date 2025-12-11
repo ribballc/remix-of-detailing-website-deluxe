@@ -17,7 +17,7 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         gold: "gold-gradient text-primary-foreground font-bold uppercase tracking-wider hover:shadow-lg hover:shadow-primary/30 hover:scale-105",
         goldOutline: "border-2 border-primary bg-transparent text-primary hover:gold-gradient hover:text-primary-foreground font-bold uppercase tracking-wider",
-        hero: "gold-gradient text-primary-foreground font-bold uppercase tracking-wider text-base px-8 py-4 hover:shadow-xl hover:shadow-primary/40 hover:scale-105 animate-pulse-gold",
+        hero: "gold-gradient text-primary-foreground font-bold uppercase tracking-wider text-base px-8 py-4 hover:shadow-xl hover:shadow-primary/40 hover:scale-105",
       },
       size: {
         default: "h-10 px-4 py-2",
