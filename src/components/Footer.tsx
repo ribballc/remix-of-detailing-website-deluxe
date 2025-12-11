@@ -1,4 +1,4 @@
-import { Instagram, Facebook, Mail, Clock } from 'lucide-react';
+import { Instagram, Facebook, Mail, Clock, Phone } from 'lucide-react';
 import logo from '@/assets/logo.png';
 
 const Footer = () => {
@@ -65,6 +65,15 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-bold mb-6 text-foreground">Contact Us</h4>
             <ul className="space-y-4">
+              <li>
+                <a 
+                  href="tel:+12148822029"
+                  className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors"
+                >
+                  <Phone className="w-5 h-5 text-primary" />
+                  <span className="text-sm">+1 (214) 882-2029</span>
+                </a>
+              </li>
               <li>
                 <a 
                   href="mailto:Deluxedetailing012@gmail.com"
