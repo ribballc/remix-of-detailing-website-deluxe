@@ -129,7 +129,7 @@ const Packages = () => {
             Detailing Packages
           </p>
           <h2 className="text-4xl md:text-5xl font-bold mb-8">
-            <span className="gold-gradient-text">Our Services</span>
+            <span className="gold-gradient-text">Detailing Packages</span>
           </h2>
 
           {/* Vehicle Type Tabs */}
