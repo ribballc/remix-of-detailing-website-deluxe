@@ -1,5 +1,6 @@
-import { Check, Flame, Zap, Sparkles } from 'lucide-react';
+import { Check, Flame, Zap, Sparkles, Car, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useState } from 'react';
 
 interface Package {
   icon: typeof Flame;
@@ -11,30 +12,149 @@ interface Package {
   popular?: boolean;
 }
 
-interface PackagesSectionProps {
-  id: string;
-  title: string;
-  subtitle: string;
-  packages: Package[];
-}
+type VehicleType = 'sedan' | 'truck';
 
-const PackagesSection = ({ id, title, subtitle, packages }: PackagesSectionProps) => {
+const sedanPackages: Package[] = [
+  {
+    icon: Flame,
+    badge: 'TOP SELLER',
+    title: 'Full Thorough Deluxe Interior',
+    price: 'Starting at $95',
+    time: '1 hr 30 mins',
+    features: [
+      'Vacuum',
+      'Blow out crevices',
+      'Shampoo seats & floor mats',
+      'Steamer (kills germs)',
+      'Plastic conditioner',
+      'Cupholder cleaning',
+      'Vent cleaning',
+      'Leather conditioner',
+      'Trunk cleaning',
+    ],
+    popular: true,
+  },
+  {
+    icon: Zap,
+    badge: '2nd Best Seller',
+    title: 'Rapid Deluxe Interior',
+    price: 'Starting at $65',
+    time: '40 mins',
+    features: [
+      'Vacuum',
+      'Seats & door cleaning',
+      'Vent cleaning',
+      'Cupholder cleaning',
+      'Console & dashboard cleaning',
+    ],
+  },
+  {
+    icon: Sparkles,
+    title: 'Deluxe Express Wash',
+    price: 'Starting at $60',
+    time: '35 mins',
+    features: [
+      'Hand wash & dry',
+      'Ceramic wax',
+      'Door jambs',
+      'Bug & tar removal',
+      'Tire shine (gloss effect)',
+    ],
+  },
+];
+
+const truckPackages: Package[] = [
+  {
+    icon: Flame,
+    badge: 'TOP SELLER',
+    title: 'Full Thorough Deluxe Interior',
+    price: 'Starting at $120',
+    time: '1 hr 30 mins',
+    features: [
+      'Vacuum',
+      'Blow out crevices',
+      'Shampoo seats & floor mats',
+      'Steamer (kills germs)',
+      'Plastic conditioner',
+      'Cupholder cleaning',
+      'Vent cleaning',
+      'Leather conditioner',
+    ],
+    popular: true,
+  },
+  {
+    icon: Zap,
+    badge: '2nd Best Seller',
+    title: 'Rapid Deluxe Interior',
+    price: '$105',
+    time: '40 mins',
+    features: [
+      'Vacuum',
+      'Seat & door cleaning',
+      'Vent cleaning',
+      'Cupholder cleaning',
+      'Console & dashboard cleaning',
+    ],
+  },
+  {
+    icon: Sparkles,
+    title: 'Deluxe Express Wash',
+    price: 'Starting at $70',
+    time: '35 mins',
+    features: [
+      'Hand wash & dry',
+      'Ceramic wax',
+      'Bug & tar removal',
+      'Tire shine (gloss effect)',
+      'Door jambs',
+    ],
+  },
+];
+
+const vehicleTabs = [
+  { id: 'sedan' as VehicleType, label: 'Sedans & Coupes', icon: Car },
+  { id: 'truck' as VehicleType, label: 'Trucks & SUVs', icon: Truck },
+];
+
+const Packages = () => {
+  const [activeTab, setActiveTab] = useState<VehicleType>('sedan');
+
+  const packages = activeTab === 'sedan' ? sedanPackages : truckPackages;
+
   return (
-    <section id={id} className="py-20 bg-secondary">
+    <section id="packages" className="py-20 bg-secondary">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <p className="text-primary font-semibold tracking-[0.2em] uppercase mb-4">
-            {subtitle}
+            Detailing Packages
           </p>
-          <h2 className="text-4xl md:text-5xl font-bold">
-            <span className="gold-gradient-text">{title}</span>
+          <h2 className="text-4xl md:text-5xl font-bold mb-8">
+            <span className="gold-gradient-text">Our Services</span>
           </h2>
+
+          {/* Vehicle Type Tabs */}
+          <div className="flex justify-center gap-2 mb-4">
+            {vehicleTabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-6 py-3 font-semibold text-sm uppercase tracking-wider transition-all duration-300 border-2 ${
+                  activeTab === tab.id
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'bg-transparent text-muted-foreground border-border hover:border-primary/50 hover:text-foreground'
+                }`}
+              >
+                <tab.icon className="w-4 h-4" />
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {packages.map((pkg, index) => (
             <div
-              key={index}
+              key={`${activeTab}-${index}`}
               className={`relative bg-card rounded-xl border ${pkg.popular ? 'border-primary' : 'border-border'} overflow-hidden hover:border-primary/50 transition-all duration-300 card-shine`}
             >
               {pkg.badge && (
@@ -44,20 +164,20 @@ const PackagesSection = ({ id, title, subtitle, packages }: PackagesSectionProps
                   </span>
                 </div>
               )}
-              
+
               <div className="p-8">
                 <div className="w-12 h-12 rounded-lg gold-gradient flex items-center justify-center mb-6">
                   <pkg.icon className="w-6 h-6 text-primary-foreground" />
                 </div>
-                
+
                 <h3 className="text-xl font-bold mb-2 text-foreground">{pkg.title}</h3>
-                
+
                 <div className="flex items-baseline gap-2 mb-2">
                   <span className="text-3xl font-black gold-gradient-text">{pkg.price}</span>
                 </div>
-                
+
                 <p className="text-muted-foreground text-sm mb-6">Time: {pkg.time}</p>
-                
+
                 <div className="border-t border-border pt-6 mb-6">
                   <p className="text-sm font-semibold text-foreground mb-4">Includes:</p>
                   <ul className="space-y-3">
@@ -69,10 +189,10 @@ const PackagesSection = ({ id, title, subtitle, packages }: PackagesSectionProps
                     ))}
                   </ul>
                 </div>
-                
+
                 <a href="#contact">
                   <Button variant={pkg.popular ? 'gold' : 'goldOutline'} className="w-full">
-                    Book Now
+                    Get In Touch
                   </Button>
                 </a>
               </div>
@@ -84,123 +204,4 @@ const PackagesSection = ({ id, title, subtitle, packages }: PackagesSectionProps
   );
 };
 
-// Sedan/Coupe Packages
-export const SedanPackages = () => {
-  const packages: Package[] = [
-    {
-      icon: Flame,
-      badge: 'TOP SELLER',
-      title: 'Full Thorough Deluxe Interior',
-      price: 'Starting at $95',
-      time: '1 hr 30 mins',
-      features: [
-        'Vacuum',
-        'Blow out crevices',
-        'Shampoo seats & floor mats',
-        'Steamer (kills germs)',
-        'Plastic conditioner',
-        'Cupholder cleaning',
-        'Vent cleaning',
-        'Leather conditioner',
-        'Trunk cleaning',
-      ],
-      popular: true,
-    },
-    {
-      icon: Zap,
-      badge: '2nd Best Seller',
-      title: 'Rapid Deluxe Interior',
-      price: 'Starting at $65',
-      time: '40 mins',
-      features: [
-        'Vacuum',
-        'Seats & door cleaning',
-        'Vent cleaning',
-        'Cupholder cleaning',
-        'Console & dashboard cleaning',
-      ],
-    },
-    {
-      icon: Sparkles,
-      title: 'Deluxe Express Wash',
-      price: 'Starting at $60',
-      time: '35 mins',
-      features: [
-        'Hand wash & dry',
-        'Ceramic wax',
-        'Door jambs',
-        'Bug & tar removal',
-        'Tire shine (gloss effect)',
-      ],
-    },
-  ];
-
-  return (
-    <PackagesSection
-      id="sedan-packages"
-      title="Sedans & Coupes"
-      subtitle="Interior & Exterior Packages"
-      packages={packages}
-    />
-  );
-};
-
-// Truck/SUV Packages
-export const TruckPackages = () => {
-  const packages: Package[] = [
-    {
-      icon: Flame,
-      badge: 'TOP SELLER',
-      title: 'Full Thorough Deluxe Interior',
-      price: 'Starting at $120',
-      time: '1 hr 30 mins',
-      features: [
-        'Vacuum',
-        'Blow out crevices',
-        'Shampoo seats & floor mats',
-        'Steamer (kills germs)',
-        'Plastic conditioner',
-        'Cupholder cleaning',
-        'Vent cleaning',
-        'Leather conditioner',
-      ],
-      popular: true,
-    },
-    {
-      icon: Zap,
-      badge: '2nd Best Seller',
-      title: 'Rapid Deluxe Interior',
-      price: '$105',
-      time: '40 mins',
-      features: [
-        'Vacuum',
-        'Seat & door cleaning',
-        'Vent cleaning',
-        'Cupholder cleaning',
-        'Console & dashboard cleaning',
-      ],
-    },
-    {
-      icon: Sparkles,
-      title: 'Deluxe Express Wash',
-      price: 'Starting at $70',
-      time: '35 mins',
-      features: [
-        'Hand wash & dry',
-        'Ceramic wax',
-        'Bug & tar removal',
-        'Tire shine (gloss effect)',
-        'Door jambs',
-      ],
-    },
-  ];
-
-  return (
-    <PackagesSection
-      id="truck-packages"
-      title="Trucks & SUVs"
-      subtitle="Interior & Exterior Packages"
-      packages={packages}
-    />
-  );
-};
+export default Packages;

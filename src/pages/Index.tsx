@@ -2,7 +2,7 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import WhyChooseUs from '@/components/WhyChooseUs';
 import ServicesOverview from '@/components/ServicesOverview';
-import { SedanPackages, TruckPackages } from '@/components/Packages';
+import Packages from '@/components/Packages';
 import AddOnServices from '@/components/AddOnServices';
 import Gallery from '@/components/Gallery';
 import Testimonials from '@/components/Testimonials';
@@ -18,8 +18,7 @@ const Index = () => {
       <Hero />
       <ServicesOverview />
       <WhyChooseUs />
-      <SedanPackages />
-      <TruckPackages />
+      <Packages />
       <AddOnServices />
       <Gallery />
       <CTASection />
