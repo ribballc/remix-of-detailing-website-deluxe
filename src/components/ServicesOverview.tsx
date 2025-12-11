@@ -1,4 +1,5 @@
-import { Car, Truck } from 'lucide-react';
+import { Car, Truck, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const services = [
   {
@@ -33,27 +34,29 @@ const ServicesOverview = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {services.map((service, index) => (
-            <a
+            <div
               key={index}
-              href={service.href}
-              className="group relative overflow-hidden rounded-xl bg-card border border-border p-8 hover:border-primary transition-all duration-300"
+              className="group relative overflow-hidden rounded-xl bg-card border-2 border-border p-8 hover:border-primary transition-all duration-300 flex flex-col h-full"
             >
-              <div className="absolute top-0 right-0 w-32 h-32 gold-gradient opacity-10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500" />
+              <div className="absolute top-0 left-0 w-full h-1 gold-gradient transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
               
-              <div className="relative z-10">
-                <div className="w-16 h-16 rounded-xl gold-gradient flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <div className="flex-1">
+                <div className="w-16 h-16 rounded-xl gold-gradient flex items-center justify-center mb-6">
                   <service.icon className="w-8 h-8 text-primary-foreground" />
                 </div>
                 <h3 className="text-2xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors">
                   {service.title}
                 </h3>
-                <p className="text-muted-foreground">{service.description}</p>
-                <div className="mt-6 text-primary font-semibold flex items-center gap-2">
-                  View Packages
-                  <span className="group-hover:translate-x-2 transition-transform duration-300">→</span>
-                </div>
+                <p className="text-muted-foreground mb-6">{service.description}</p>
               </div>
-            </a>
+              
+              <a href={service.href} className="block">
+                <Button variant="gold" className="w-full group/btn">
+                  View Packages
+                  <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                </Button>
+              </a>
+            </div>
           ))}
         </div>
       </div>
