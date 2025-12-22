@@ -32,7 +32,7 @@ const Footer = () => {
                 <Facebook className="w-5 h-5 text-muted-foreground group-hover:text-primary-foreground" />
               </a>
               <a 
-                href="https://tiktok.com/@Deluxedetailing1k" 
+                href="https://www.tiktok.com/@deluxedetailing1k?lang=en" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-lg bg-secondary hover:gold-gradient flex items-center justify-center transition-all group"

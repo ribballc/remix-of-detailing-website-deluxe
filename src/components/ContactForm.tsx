@@ -3,6 +3,21 @@ import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
+const services = [
+  { id: 'interior-sedan', label: 'Full Thorough Deluxe Interior - Sedan ($95)' },
+  { id: 'rapid-sedan', label: 'Rapid Deluxe Interior - Sedan ($65)' },
+  { id: 'express-sedan', label: 'Deluxe Express Wash - Sedan ($60)' },
+  { id: 'interior-truck', label: 'Full Thorough Deluxe Interior - Truck/SUV ($120)' },
+  { id: 'rapid-truck', label: 'Rapid Deluxe Interior - Truck/SUV ($105)' },
+  { id: 'express-truck', label: 'Deluxe Express Wash - Truck/SUV ($70)' },
+];
+
+const addons = [
+  { id: 'ceramic', label: 'Ceramic Coating ($875)' },
+  { id: 'headlight', label: 'Headlight Restoration ($85)' },
+  { id: 'buffing', label: 'Buffing Services ($140)' },
+];
+
 const ContactForm = () => {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
@@ -10,14 +25,35 @@ const ContactForm = () => {
     email: '',
     phone: '',
     vehicle: '',
-    service: '',
+    selectedServices: [] as string[],
+    selectedAddons: [] as string[],
     message: '',
   });
 
+  const handleServiceToggle = (serviceId: string) => {
+    setFormData(prev => ({
+      ...prev,
+      selectedServices: prev.selectedServices.includes(serviceId)
+        ? prev.selectedServices.filter(id => id !== serviceId)
+        : [...prev.selectedServices, serviceId]
+    }));
+  };
+
+  const handleAddonToggle = (addonId: string) => {
+    setFormData(prev => ({
+      ...prev,
+      selectedAddons: prev.selectedAddons.includes(addonId)
+        ? prev.selectedAddons.filter(id => id !== addonId)
+        : [...prev.selectedAddons, addonId]
+    }));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const selectedServiceLabels = formData.selectedServices.map(id => services.find(s => s.id === id)?.label).join(', ');
+    const selectedAddonLabels = formData.selectedAddons.map(id => addons.find(a => a.id === id)?.label).join(', ');
     const subject = `Booking Request from ${formData.name}`;
-    const body = `Name: ${formData.name}%0D%0AEmail: ${formData.email}%0D%0APhone: ${formData.phone}%0D%0AVehicle: ${formData.vehicle}%0D%0AService: ${formData.service}%0D%0A%0D%0AMessage:%0D%0A${formData.message}`;
+    const body = `Name: ${formData.name}%0D%0AEmail: ${formData.email}%0D%0APhone: ${formData.phone}%0D%0AVehicle: ${formData.vehicle}%0D%0AServices: ${selectedServiceLabels || 'None'}%0D%0AAdd-ons: ${selectedAddonLabels || 'None'}%0D%0A%0D%0AMessage:%0D%0A${formData.message}`;
     window.location.href = `mailto:Deluxedetailing012@gmail.com?subject=${subject}&body=${body}`;
     toast({
       title: "Opening email client...",
@@ -106,7 +142,7 @@ const ContactForm = () => {
                   <Facebook className="w-5 h-5 text-muted-foreground group-hover:text-primary-foreground" />
                 </a>
                 <a 
-                  href="https://tiktok.com/@Deluxedetailing1k" 
+                  href="https://www.tiktok.com/@deluxedetailing1k?lang=en" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-12 h-12 rounded-lg bg-secondary hover:gold-gradient flex items-center justify-center transition-all group"
@@ -157,23 +193,55 @@ const ContactForm = () => {
                   onChange={(e) => setFormData({ ...formData, vehicle: e.target.value })}
                 />
               </div>
-              <select
-                className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:border-primary focus:outline-none text-foreground"
-                value={formData.service}
-                onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-              >
-                <option value="">Select a Service</option>
-                <option value="Full Thorough Deluxe Interior - Sedan">Full Thorough Deluxe Interior - Sedan ($95)</option>
-                <option value="Rapid Deluxe Interior - Sedan">Rapid Deluxe Interior - Sedan ($65)</option>
-                <option value="Deluxe Express Wash - Sedan">Deluxe Express Wash - Sedan ($60)</option>
-                <option value="Full Thorough Deluxe Interior - Truck/SUV">Full Thorough Deluxe Interior - Truck/SUV ($120)</option>
-                <option value="Rapid Deluxe Interior - Truck/SUV">Rapid Deluxe Interior - Truck/SUV ($105)</option>
-                <option value="Deluxe Express Wash - Truck/SUV">Deluxe Express Wash - Truck/SUV ($70)</option>
-                <option value="Ceramic Coating">Ceramic Coating ($875)</option>
-                <option value="Headlight Restoration">Headlight Restoration ($85)</option>
-                <option value="Buffing Services">Buffing Services ($140)</option>
-                <option value="Other">Other - Please specify in message</option>
-              </select>
+              {/* Select Your Service */}
+              <div className="space-y-3">
+                <p className="text-sm font-semibold text-foreground">Select Your Service</p>
+                <div className="grid grid-cols-1 gap-2">
+                  {services.map((service) => (
+                    <label
+                      key={service.id}
+                      className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
+                        formData.selectedServices.includes(service.id)
+                          ? 'border-primary bg-primary/10'
+                          : 'border-border bg-secondary hover:border-primary/50'
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={formData.selectedServices.includes(service.id)}
+                        onChange={() => handleServiceToggle(service.id)}
+                        className="w-4 h-4 accent-primary"
+                      />
+                      <span className="text-sm text-foreground">{service.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Add-ons */}
+              <div className="space-y-3">
+                <p className="text-sm font-semibold text-foreground">Add-ons</p>
+                <div className="grid grid-cols-1 gap-2">
+                  {addons.map((addon) => (
+                    <label
+                      key={addon.id}
+                      className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
+                        formData.selectedAddons.includes(addon.id)
+                          ? 'border-primary bg-primary/10'
+                          : 'border-border bg-secondary hover:border-primary/50'
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={formData.selectedAddons.includes(addon.id)}
+                        onChange={() => handleAddonToggle(addon.id)}
+                        className="w-4 h-4 accent-primary"
+                      />
+                      <span className="text-sm text-foreground">{addon.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
               <textarea
                 placeholder="Additional Details or Questions"
                 rows={4}
