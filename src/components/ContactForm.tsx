@@ -250,7 +250,7 @@ const ContactForm = () => {
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
               />
               <Button type="submit" variant="gold" size="xl" className="w-full">
-                Send Booking Request
+                Submit
               </Button>
             </form>
           </div>
