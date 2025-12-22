@@ -50,11 +50,11 @@ const Gallery = () => {
         </div>
 
         <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-6">
+          <div className="flex">
             {galleryItems.map((item, index) => (
               <div
                 key={index}
-                className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_25%] min-w-0"
+                className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_25%] min-w-0 pl-4 first:pl-0"
               >
                 <div className="group relative overflow-hidden rounded-xl aspect-square cursor-pointer">
                   <img

@@ -1,28 +1,28 @@
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import gallery1 from '@/assets/gallery-1.png';
-import gallery2 from '@/assets/gallery-2.png';
-import gallery3 from '@/assets/gallery-3.png';
-import gallery4 from '@/assets/gallery-4.png';
+import service1 from '@/assets/service-1.jpg';
+import service2 from '@/assets/service-2.jpg';
+import service3 from '@/assets/service-3.jpg';
+import service4 from '@/assets/service-4.jpg';
 
 const services = [
   {
-    image: gallery1,
+    image: service1,
     title: 'Mobile Detailing',
     description: 'We come to you for convenient on-site service',
   },
   {
-    image: gallery2,
+    image: service2,
     title: 'Ceramic Coating',
     description: 'Long-lasting protection for your paint',
   },
   {
-    image: gallery3,
+    image: service3,
     title: 'Headlight Restoration',
     description: 'Restore clarity and improve visibility',
   },
   {
-    image: gallery4,
+    image: service4,
     title: 'Buffing Services',
     description: 'Remove scratches and restore shine',
   },
