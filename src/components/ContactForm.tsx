@@ -1,6 +1,6 @@
 import { Mail, Clock, Instagram, Facebook, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
 const services = [
@@ -20,6 +20,7 @@ const addons = [
 
 const ContactForm = () => {
   const { toast } = useToast();
+  const [showCalendly, setShowCalendly] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -29,6 +30,20 @@ const ContactForm = () => {
     selectedAddons: [] as string[],
     message: '',
   });
+
+  useEffect(() => {
+    if (showCalendly) {
+      // Load Calendly widget script
+      const script = document.createElement('script');
+      script.src = 'https://assets.calendly.com/assets/external/widget.js';
+      script.async = true;
+      document.body.appendChild(script);
+      
+      return () => {
+        document.body.removeChild(script);
+      };
+    }
+  }, [showCalendly]);
 
   const handleServiceToggle = (serviceId: string) => {
     setFormData(prev => ({
@@ -50,14 +65,10 @@ const ContactForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const selectedServiceLabels = formData.selectedServices.map(id => services.find(s => s.id === id)?.label).join(', ');
-    const selectedAddonLabels = formData.selectedAddons.map(id => addons.find(a => a.id === id)?.label).join(', ');
-    const subject = `Booking Request from ${formData.name}`;
-    const body = `Name: ${formData.name}%0D%0AEmail: ${formData.email}%0D%0APhone: ${formData.phone}%0D%0AVehicle: ${formData.vehicle}%0D%0AServices: ${selectedServiceLabels || 'None'}%0D%0AAdd-ons: ${selectedAddonLabels || 'None'}%0D%0A%0D%0AMessage:%0D%0A${formData.message}`;
-    window.location.href = `mailto:Deluxedetailing012@gmail.com?subject=${subject}&body=${body}`;
+    setShowCalendly(true);
     toast({
-      title: "Opening email client...",
-      description: "Your booking request is ready to send!",
+      title: "Great!",
+      description: "Select a time slot to complete your booking.",
     });
   };
 
@@ -155,104 +166,124 @@ const ContactForm = () => {
             </div>
           </div>
 
-          {/* Contact Form */}
+          {/* Contact Form or Calendly */}
           <div className="bg-card p-8 rounded-xl border border-border">
-            <h3 className="text-2xl font-bold mb-6 text-foreground">Request a Booking</h3>
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <input
-                  type="text"
-                  placeholder="Your Name"
-                  required
-                  className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:border-primary focus:outline-none text-foreground placeholder:text-muted-foreground"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            {showCalendly ? (
+              <>
+                <h3 className="text-2xl font-bold mb-6 text-foreground">Schedule Your Appointment</h3>
+                <div 
+                  className="calendly-inline-widget" 
+                  data-url="https://calendly.com/deluxedetailing012/30min?back=1&month=2025-12"
+                  style={{ minWidth: '320px', height: '630px' }}
                 />
-                <input
-                  type="email"
-                  placeholder="Email Address"
-                  required
-                  className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:border-primary focus:outline-none text-foreground placeholder:text-muted-foreground"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                />
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <input
-                  type="tel"
-                  placeholder="Phone Number"
-                  className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:border-primary focus:outline-none text-foreground placeholder:text-muted-foreground"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                />
-                <input
-                  type="text"
-                  placeholder="Vehicle (Year, Make, Model)"
-                  className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:border-primary focus:outline-none text-foreground placeholder:text-muted-foreground"
-                  value={formData.vehicle}
-                  onChange={(e) => setFormData({ ...formData, vehicle: e.target.value })}
-                />
-              </div>
-              {/* Select Your Service */}
-              <div className="space-y-3">
-                <p className="text-sm font-semibold text-foreground">Select Your Service</p>
-                <div className="grid grid-cols-1 gap-2">
-                  {services.map((service) => (
-                    <label
-                      key={service.id}
-                      className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
-                        formData.selectedServices.includes(service.id)
-                          ? 'border-primary bg-primary/10'
-                          : 'border-border bg-secondary hover:border-primary/50'
-                      }`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={formData.selectedServices.includes(service.id)}
-                        onChange={() => handleServiceToggle(service.id)}
-                        className="w-4 h-4 accent-primary"
-                      />
-                      <span className="text-sm text-foreground">{service.label}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
+                <Button 
+                  variant="outline" 
+                  className="w-full mt-4"
+                  onClick={() => setShowCalendly(false)}
+                >
+                  Back to Form
+                </Button>
+              </>
+            ) : (
+              <>
+                <h3 className="text-2xl font-bold mb-6 text-foreground">Request a Booking</h3>
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <input
+                      type="text"
+                      placeholder="Your Name"
+                      required
+                      className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:border-primary focus:outline-none text-foreground placeholder:text-muted-foreground"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    />
+                    <input
+                      type="email"
+                      placeholder="Email Address"
+                      required
+                      className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:border-primary focus:outline-none text-foreground placeholder:text-muted-foreground"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <input
+                      type="tel"
+                      placeholder="Phone Number"
+                      className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:border-primary focus:outline-none text-foreground placeholder:text-muted-foreground"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Vehicle (Year, Make, Model)"
+                      className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:border-primary focus:outline-none text-foreground placeholder:text-muted-foreground"
+                      value={formData.vehicle}
+                      onChange={(e) => setFormData({ ...formData, vehicle: e.target.value })}
+                    />
+                  </div>
+                  {/* Select Your Service */}
+                  <div className="space-y-3">
+                    <p className="text-sm font-semibold text-foreground">Select Your Service</p>
+                    <div className="grid grid-cols-1 gap-2">
+                      {services.map((service) => (
+                        <label
+                          key={service.id}
+                          className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
+                            formData.selectedServices.includes(service.id)
+                              ? 'border-primary bg-primary/10'
+                              : 'border-border bg-secondary hover:border-primary/50'
+                          }`}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={formData.selectedServices.includes(service.id)}
+                            onChange={() => handleServiceToggle(service.id)}
+                            className="w-4 h-4 accent-primary"
+                          />
+                          <span className="text-sm text-foreground">{service.label}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
 
-              {/* Add-ons */}
-              <div className="space-y-3">
-                <p className="text-sm font-semibold text-foreground">Add-ons</p>
-                <div className="grid grid-cols-1 gap-2">
-                  {addons.map((addon) => (
-                    <label
-                      key={addon.id}
-                      className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
-                        formData.selectedAddons.includes(addon.id)
-                          ? 'border-primary bg-primary/10'
-                          : 'border-border bg-secondary hover:border-primary/50'
-                      }`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={formData.selectedAddons.includes(addon.id)}
-                        onChange={() => handleAddonToggle(addon.id)}
-                        className="w-4 h-4 accent-primary"
-                      />
-                      <span className="text-sm text-foreground">{addon.label}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-              <textarea
-                placeholder="Additional Details or Questions"
-                rows={4}
-                className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:border-primary focus:outline-none text-foreground placeholder:text-muted-foreground resize-none"
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-              />
-              <Button type="submit" variant="gold" size="xl" className="w-full">
-                Submit
-              </Button>
-            </form>
+                  {/* Add-ons */}
+                  <div className="space-y-3">
+                    <p className="text-sm font-semibold text-foreground">Add-ons</p>
+                    <div className="grid grid-cols-1 gap-2">
+                      {addons.map((addon) => (
+                        <label
+                          key={addon.id}
+                          className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
+                            formData.selectedAddons.includes(addon.id)
+                              ? 'border-primary bg-primary/10'
+                              : 'border-border bg-secondary hover:border-primary/50'
+                          }`}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={formData.selectedAddons.includes(addon.id)}
+                            onChange={() => handleAddonToggle(addon.id)}
+                            className="w-4 h-4 accent-primary"
+                          />
+                          <span className="text-sm text-foreground">{addon.label}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                  <textarea
+                    placeholder="Additional Details or Questions"
+                    rows={4}
+                    className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:border-primary focus:outline-none text-foreground placeholder:text-muted-foreground resize-none"
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  />
+                  <Button type="submit" variant="gold" size="xl" className="w-full">
+                    Submit
+                  </Button>
+                </form>
+              </>
+            )}
           </div>
         </div>
       </div>
