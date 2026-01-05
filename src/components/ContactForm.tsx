@@ -26,6 +26,7 @@ const ContactForm = () => {
     email: '',
     phone: '',
     vehicle: '',
+    address: '',
     selectedServices: [] as string[],
     selectedAddons: [] as string[],
     message: '',
@@ -222,6 +223,13 @@ const ContactForm = () => {
                       onChange={(e) => setFormData({ ...formData, vehicle: e.target.value })}
                     />
                   </div>
+                  <input
+                    type="text"
+                    placeholder="Address"
+                    className="w-full px-4 py-3 bg-secondary border border-border rounded-lg focus:border-primary focus:outline-none text-foreground placeholder:text-muted-foreground"
+                    value={formData.address}
+                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                  />
                   {/* Select Your Service */}
                   <div className="space-y-3">
                     <p className="text-sm font-semibold text-foreground">Select Your Service</p>
