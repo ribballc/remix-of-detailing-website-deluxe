@@ -2,6 +2,7 @@ import { Mail, Clock, Instagram, Facebook, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const services = [
   { id: 'interior-sedan', label: 'Full Thorough Deluxe Interior - Sedan ($95)' },
@@ -21,6 +22,7 @@ const addons = [
 const ContactForm = () => {
   const { toast } = useToast();
   const [showCalendly, setShowCalendly] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -64,13 +66,50 @@ const ContactForm = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setShowCalendly(true);
-    toast({
-      title: "Great!",
-      description: "Select a time slot to complete your booking.",
-    });
+    setIsSubmitting(true);
+
+    try {
+      // Get service and addon labels
+      const selectedServiceLabels = formData.selectedServices.map(
+        id => services.find(s => s.id === id)?.label || id
+      );
+      const selectedAddonLabels = formData.selectedAddons.map(
+        id => addons.find(a => a.id === id)?.label || id
+      );
+
+      // Send email via edge function
+      const { error } = await supabase.functions.invoke('send-contact-email', {
+        body: {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          vehicleType: formData.vehicle,
+          address: formData.address,
+          services: selectedServiceLabels,
+          addons: selectedAddonLabels,
+          message: formData.message,
+        },
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Great!",
+        description: "Your booking request has been sent. Select a time slot to complete your booking.",
+      });
+      setShowCalendly(true);
+    } catch (error: any) {
+      console.error('Error sending email:', error);
+      toast({
+        title: "Submission received",
+        description: "Select a time slot to complete your booking.",
+      });
+      setShowCalendly(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -286,8 +325,8 @@ const ContactForm = () => {
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   />
-                  <Button type="submit" variant="gold" size="xl" className="w-full">
-                    Submit
+                  <Button type="submit" variant="gold" size="xl" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting ? 'Sending...' : 'Submit'}
                   </Button>
                 </form>
               </>
