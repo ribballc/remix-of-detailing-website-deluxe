@@ -28,21 +28,8 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const { name, email, phone, vehicleType, address, services, addons, message }: ContactEmailRequest = await req.json();
 
-    const servicesHtml = services.length > 0 
-      ? `<li><strong>Services:</strong> ${services.join(", ")}</li>` 
-      : "";
-    
-    const addonsHtml = addons.length > 0 
-      ? `<li><strong>Add-ons:</strong> ${addons.join(", ")}</li>` 
-      : "";
-    
-    const messageHtml = message 
-      ? `<li><strong>Message:</strong> ${message}</li>` 
-      : "";
-
-    const addressHtml = address
-      ? `<li><strong>Address:</strong> ${address}</li>`
-      : "";
+    const servicesText = services.length > 0 ? services.join(", ") : "None selected";
+    const addonsText = addons.length > 0 ? addons.join(", ") : "None selected";
 
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -52,23 +39,24 @@ const handler = async (req: Request): Promise<Response> => {
       },
       body: JSON.stringify({
         from: "Deluxe Detailing <onboarding@resend.dev>",
-        to: ["deluxedetailing012@gmail.com"],
-        subject: `New Booking Request from ${name}`,
+        to: ["deluxedetailing012@gmail.com", "jake@darkerdigital.com"],
+        subject: "Website Form Submission",
         html: `
-          <h1>New Booking Request</h1>
-          <p>You have received a new booking request from your website.</p>
-          <h2>Customer Details:</h2>
-          <ul>
-            <li><strong>Name:</strong> ${name}</li>
-            <li><strong>Email:</strong> ${email}</li>
-            <li><strong>Phone:</strong> ${phone}</li>
-            <li><strong>Vehicle:</strong> ${vehicleType}</li>
-            ${addressHtml}
-            ${servicesHtml}
-            ${addonsHtml}
-            ${messageHtml}
-          </ul>
-          <p>Please follow up with this customer to confirm their appointment.</p>
+          <p><strong>Name:</strong> ${name}</p>
+          <br/>
+          <p><strong>Email:</strong> ${email}</p>
+          <br/>
+          <p><strong>Phone:</strong> ${phone}</p>
+          <br/>
+          <p><strong>Vehicle Type:</strong> ${vehicleType}</p>
+          <br/>
+          <p><strong>Address:</strong> ${address || "Not provided"}</p>
+          <br/>
+          <p><strong>Services:</strong> ${servicesText}</p>
+          <br/>
+          <p><strong>Add-ons:</strong> ${addonsText}</p>
+          <br/>
+          <p><strong>Message:</strong> ${message || "No message"}</p>
         `,
       }),
     });
